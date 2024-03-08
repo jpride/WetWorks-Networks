@@ -1,0 +1,51 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}"
+           x:Key="InterfaceButtonTheme">
+        <Style.Setters>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Grid VerticalAlignment="Stretch"
+                              HorizontalAlignment="Stretch"
+                              Background="{TemplateBinding Background}">
+
+
+                            <TextBlock x:Name="TxtBlock"
+                                       Text="{TemplateBinding Property=Content}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Foreground="WhiteSmoke" 
+                                       FontStretch="UltraExpanded" 
+                                       FontWeight="Bold" 
+                                       FontFamily="Global Sans Serif"
+                                       FontSize="16"
+                                       
+                                       />
+
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0,0,1,0" />
+            <Setter Property="BorderBrush" Value="Black" />
+
+        </Style.Setters>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="#9000FFFF" />
+            </Trigger>
+
+            <Trigger Property="IsMouseOver"  Value="True">
+                <Setter Property="Background" Value="#9000FFFF" />
+            </Trigger>
+
+            <Trigger Property="IsChecked" Value="False">
+                
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
