@@ -205,7 +205,6 @@ namespace Modern_UI
         {
             choiceSelect = 5;
             ChoiceInterlock(choiceSelect);
-            choice5Btn.IsChecked = true;
         }
 
         private void LogoBtn_Click(object sender, RoutedEventArgs e)
