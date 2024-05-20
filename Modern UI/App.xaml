@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="Theme/SchemeButtonTheme.xaml" />
                 <ResourceDictionary Source="Theme/TextBoxTheme.xaml" />
                 <ResourceDictionary Source="Theme/LogoButtonTheme.xaml" />
+                <ResourceDictionary Source="Theme/AccentRectangleTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

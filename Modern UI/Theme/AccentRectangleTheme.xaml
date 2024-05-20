@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="RectangleBackColor" Color="#2EBE45" />
+    <Style TargetType="{x:Type Rectangle}"
+           x:Key="AccentRectangleTheme">
+        <Setter Property="Fill" Value="{StaticResource RectangleBackColor}" />
+    </Style>
+</ResourceDictionary>

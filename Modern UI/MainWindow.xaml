@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modern_UI"
         mc:Ignorable="d"
-        Title="MainWindow" 
+        Title="Wetwork IP" 
         Height="460" 
         Width="700"
         Background="#EF131D34" 
-        ResizeMode="NoResize" KeyDown="OnKeyDownInMainWindowHandler" WindowStartupLocation="CenterScreen"
-        
-       
-        >
+        ResizeMode="NoResize" 
+        KeyDown="OnKeyDownInMainWindowHandler" 
+        WindowStartupLocation="CenterScreen">
+    
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -34,13 +34,16 @@
 
 
 
-        <Image Grid.Column="2" 
+        <Image Grid.Column="0" 
                Grid.Row="2" 
-               Grid.ColumnSpan="4" 
-               HorizontalAlignment="Left" 
+               Grid.ColumnSpan="7" 
+               HorizontalAlignment="Center" 
                Height="290"  
                VerticalAlignment="Top"  
-               Source="/cthulhu_blur.png" Width="294" Margin="51,0,0,0" Grid.RowSpan="2"
+               Source="/cthulhu_blur.png" 
+               Width="294" 
+               Margin="0,0,0,0" 
+               Grid.RowSpan="2"
                />
 
 
@@ -64,19 +67,27 @@
         <StackPanel Grid.Row="0"
                     Grid.Column="7" 
                     Orientation="Vertical">
-            <Label Content="Wetwork IP"
+            <Label Content="WETWORK IP"
                Grid.Row="0"
                Grid.Column="7"
                FontSize="14"
                VerticalAlignment="Top"
                HorizontalAlignment="Right"/>
 
-            <Label Content="v2.0.0"
+            <Label Content=" MARK II"
                Grid.Row="0"
                Grid.Column="7"
                FontSize="10"
                VerticalAlignment="Top"
                HorizontalAlignment="Right"/>
+            
+            <Label x:Name="assemblyLbl"
+               Grid.Row="0"
+               Grid.Column="7"
+               FontSize="8"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Right"/>
+            
         </StackPanel>
 
 
@@ -108,7 +119,8 @@
 
         <StackPanel Grid.Row="1"
                     Grid.ColumnSpan="7"
-                    Orientation="Horizontal">
+                    Orientation="Horizontal"
+                    >
 
             <RadioButton Content="ETHERNET"
                     x:Name="ethernetBtn"
@@ -124,7 +136,9 @@
         </StackPanel>
         <StackPanel Grid.Row="2"
                     Grid.ColumnSpan="7"
-                    Orientation="Horizontal">
+                    Orientation="Horizontal"
+                    HorizontalAlignment="center"
+                    VerticalAlignment="Center">
 
             <Grid Width="700">
                 <Grid.ColumnDefinitions>
@@ -133,19 +147,17 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
-                    <RowDefinition />
+                   
                 </Grid.RowDefinitions>
-
-
-               
-
 
                 <StackPanel Grid.Column="0"
                             Grid.Row="0"
                             Grid.RowSpan="2"
                             Orientation="Vertical"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
                             Width="300"
-                            Margin="25,15,25,7">
+                            Margin="10,15,25,7">
 
                     <StackPanel.Background>
                         <ImageBrush ImageSource="/Stack Panel BG.png"
@@ -186,7 +198,7 @@
                                     Width="10"
                                     Height="43"
                                     HorizontalAlignment="Left"
-                                    Fill="#9000FFFF"
+                                    Style="{StaticResource AccentRectangleTheme}"
                                     Visibility="Hidden"/>
 
 
@@ -204,7 +216,7 @@
                                     Width="10"
                                     Height="43"
                                     HorizontalAlignment="Left"
-                                    Fill="#9000FFFF"
+                                    Style="{StaticResource AccentRectangleTheme}"
                                     Visibility="Hidden"/>
 
                         <RadioButton    Grid.Row="3"
@@ -219,7 +231,7 @@
                                     Width="10"
                                     Height="43"
                                     HorizontalAlignment="Left"
-                                    Fill="#9000FFFF"
+                                    Style="{StaticResource AccentRectangleTheme}"
                                     Visibility="Hidden"/>
 
                         <RadioButton    Grid.Row="4"
@@ -234,7 +246,7 @@
                                     Width="10"
                                     Height="43"
                                     HorizontalAlignment="Left"
-                                    Fill="#9000FFFF" 
+                                    Style="{StaticResource AccentRectangleTheme}" 
                                     Visibility="Hidden"/>
 
                         <RadioButton    Grid.Row="5"
@@ -249,7 +261,7 @@
                                     Width="10"
                                     Height="43"
                                     HorizontalAlignment="Left"
-                                    Fill="#9000FFFF"
+                                    Style="{StaticResource AccentRectangleTheme}"
                                     Visibility="Hidden"/>
 
                         <TextBox x:Name="userEntryTxt"
@@ -258,7 +270,9 @@
                                  Margin="35,0"
                                  VerticalAlignment="Center" 
                                  Style="{StaticResource ModernTextBox}"
-                                 GotFocus="userEntry_GotFocus" KeyDown="OnKeyDownInUserEntryBoxHandler" 
+                                 GotFocus="userEntry_GotFocus" 
+                                 KeyDown="OnKeyDownInUserEntryBoxHandler" 
+                                 TextChanged="OnUserEntryTextChanged"
                                   />
 
 
@@ -269,10 +283,12 @@
 
                 <StackPanel Grid.Column="1"
                             Grid.Row="0"
-                            Grid.RowSpan="2"
+                            Grid.RowSpan="1"
                             Orientation="Vertical"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
                             Width="300"
-                            Margin="25,15,25,7">
+                            Margin="25,15,10,7">
                     <StackPanel.Background>
                         <ImageBrush ImageSource="/Stack Panel BG.png" 
                                     Stretch="Uniform"/>
@@ -283,7 +299,7 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="40" />
+                            <RowDefinition Height="39" />
                             <RowDefinition Height="43"/>
                             <RowDefinition Height="43"/>
                             <RowDefinition Height="43"/>
@@ -296,7 +312,8 @@
                                 Margin="5"
                                 Content="CURRENT SETTINGS"
                                 FontWeight="Bold"
-                                HorizontalAlignment="Center"/>
+                                HorizontalAlignment="Center"
+                                />
 
                         <Rectangle Grid.Row="1"
                                    Fill="#00FFFFFF" 
@@ -307,6 +324,7 @@
                                VerticalAlignment="Bottom"
                                Content="HOSTNAME"
                                Foreground="White"
+                               Margin="10,0,0,0"
                                />
 
                         <Label x:Name="hostnameTxt"
@@ -314,12 +332,15 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Content="TSIL-JEFFPRIDE"
-                               Foreground="White"
+                               Foreground="White" 
+                               FontFamily="Trebuchet MS"
+                               FontSize="13"
+                               Margin="20,0,0,0"
                                />
 
 
                         <Rectangle Grid.Row="2"
-                                   Fill="#00FFFFFF" 
+                                   Fill="#10FFFFFF" 
                                    Stroke="#FF7E7E7E"/>
 
                         <Label Grid.Row="2"
@@ -327,6 +348,8 @@
                                VerticalAlignment="Bottom"
                                Content="DOMAIN"
                                Foreground="White"
+                               Margin="10,0,0,0"
+                               
                                />
 
                         <Label x:Name="domainTxt"
@@ -335,6 +358,9 @@
                                VerticalAlignment="Center"
                                Content="tsi-inc.local"
                                Foreground="White"
+                               FontFamily="Trebuchet MS"
+                               FontSize="13"
+                               Margin="20,0,0,0"
                                />
 
 
@@ -347,6 +373,7 @@
                                VerticalAlignment="Bottom"
                                Content="ADAPTER"
                                Foreground="White"
+                               Margin="10,0,0,0"
                                />
 
                         <Label x:Name="adapterTxt"
@@ -355,11 +382,14 @@
                                VerticalAlignment="Center"
                                Content="ETHERNET"
                                Foreground="White"
+                               FontFamily="Trebuchet MS"
+                               FontSize="13"
+                               Margin="20,0,0,0"
                                />
 
 
                         <Rectangle Grid.Row="4"
-                                   Fill="#00FFFFFF" 
+                                   Fill="#10FFFFFF" 
                                    Stroke="#FF7E7E7E"/>
 
                         <Label Grid.Row="4"
@@ -367,6 +397,8 @@
                                VerticalAlignment="Bottom"
                                Content="IP ADDRESS"
                                Foreground="White"
+                               Margin="10,0,0,0"
+                               
                                />
 
                         <Label x:Name="ipaTxt"
@@ -375,6 +407,9 @@
                                VerticalAlignment="Center"
                                Content="192.168.86.52 / 16"
                                Foreground="White"
+                               FontFamily="Trebuchet MS"
+                               FontSize="13"
+                               Margin="20,0,0,0"
                                />
 
                         <Rectangle Grid.Row="5"
@@ -386,20 +421,22 @@
                                VerticalAlignment="Bottom"
                                Content="SPEED"
                                Foreground="White"
+                               Margin="10,0,0,0"
                                />
 
                         <Label x:Name="speedTxt"
                                Grid.Row="5"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               Content="600 Mb"
+                               Content="600 Mbps"
                                Foreground="White"
+                               FontFamily="Trebuchet MS"
+                               FontSize="13"
+                               Margin="20,0,0,0"
                                />
                     </Grid>
 
                 </StackPanel>
-
-
             </Grid>
 
 
