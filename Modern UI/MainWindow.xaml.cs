@@ -638,7 +638,6 @@ namespace WetWorks_NetWorks
 
         private void UpdateAdapterUIInfo(UnicastIPAddressInformation ip)
         {
-
             if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
             {
                 SetSpeed();
@@ -647,7 +646,7 @@ namespace WetWorks_NetWorks
                 {
                     adapterTxt.Content = String.Format($"{_adapter}");
                     hostnameTxt.Content = Dns.GetHostName();
-                    SetIpaText(String.Format($"{ip.Address.ToString()} / {ip.PrefixLength.ToString()}"));
+                    SetIpaText(String.Format($"{ip.Address} / {ip.PrefixLength}"));
                 });
       
 
@@ -694,7 +693,6 @@ namespace WetWorks_NetWorks
             }
 
             return null;
-
         }
         #endregion
 
@@ -764,7 +762,6 @@ namespace WetWorks_NetWorks
                         bool validIP;
                         bool validMask;
 
-
                         try
                         {
                             if (userEntryTxt.Text.Contains(" "))
@@ -793,7 +790,7 @@ namespace WetWorks_NetWorks
                                         Verb = "runas",
                                         RedirectStandardOutput = false,
                                     };
-                                    
+                                    p.StartInfo = info;
                                     ProcessRequest(p);
                                     UpdateAdapterInfo();
                                 }
@@ -846,7 +843,7 @@ namespace WetWorks_NetWorks
                                             Verb = "runas",
                                             RedirectStandardOutput = false,
                                         };
-
+                                        p.StartInfo = info;
                                         ProcessRequest(p);
                                         UpdateAdapterInfo();
                                     }
@@ -876,8 +873,13 @@ namespace WetWorks_NetWorks
         }
 
         private void OnUserEntryTextChanged(object sender, TextChangedEventArgs e)
-        {          
-            Console.WriteLine($"UserEntryText: {userEntryTxt.Text}");
+        {
+            // Handle text changed events
+            var textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                Console.WriteLine($"Text changed to: {textBox.Text}");
+            }
         }
 
         private void OnKeyDownInMainWindowHandler(object sender, KeyEventArgs e)

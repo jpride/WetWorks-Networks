@@ -268,7 +268,6 @@
                                  Grid.Row="5"
                                  Height="30"
                                  Margin="35,0"
-                                 VerticalAlignment="Center" 
                                  Style="{StaticResource ModernTextBox}"
                                  GotFocus="userEntry_GotFocus" 
                                  KeyDown="OnKeyDownInUserEntryBoxHandler" 
