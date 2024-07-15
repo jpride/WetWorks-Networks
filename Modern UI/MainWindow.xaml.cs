@@ -9,11 +9,8 @@ using System.Windows.Input;
 using System.Reflection;
 
 
-namespace Modern_UI
-{
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+namespace WetWorks_NetWorks
+{ 
     public partial class MainWindow : Window
     {
        
@@ -28,10 +25,9 @@ namespace Modern_UI
 
         private NetworkInterface _nic;
         private string _adapter;
-        private string _mac;
         private long speed;
         private int _adapterCount = 0;
-        private NetworkInterfaceType _adapterType;// = NetworkInterfaceType.Ethernet;
+        private NetworkInterfaceType _adapterType;
 
 
         readonly string _dhcpChoiceContent = "DHCP";
@@ -59,6 +55,7 @@ namespace Modern_UI
             //Event handler watching for Network Address Change, triggers the UpdateAdapterInfo() method
             NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
             NetworkChange.NetworkAvailabilityChanged += new NetworkAvailabilityChangedEventHandler(NetworkAvailabilityChangedCallback);
+            
 
             //Initialize button content
             choice1Btn.Content = _dhcpChoiceContent;
@@ -81,6 +78,7 @@ namespace Modern_UI
             RadioButton myButton = (RadioButton)sender;
             string myName = myButton.Name;
 
+            Console.WriteLine(myName);
             switch (myButton.Name)
             {
                 case "choice1Btn":
@@ -109,7 +107,7 @@ namespace Modern_UI
                     ResetUserEntryText();
 
                     if (choiceSelect == 2)
-                    {
+                    {                      
                         Process p = CreateProcess(_adapter, _choice2NetShString);
                         ProcessRequest(p);
                         UpdateAdapterInfo();
@@ -261,6 +259,8 @@ namespace Modern_UI
         #region Network Functions
         private void AddressChangedCallback(object sender, EventArgs e)
         {
+            Console.WriteLine($"AddressChangedCallback Entered");
+            
             //Refresh apapters and find the one that matches _adapter from UpdateAdapterInfo()
             NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
             foreach (NetworkInterface n in adapters)
@@ -296,8 +296,14 @@ namespace Modern_UI
 
         private void NetworkAvailabilityChangedCallback(object sender, NetworkAvailabilityEventArgs e)
         {
+            Console.WriteLine($"NetworkAvailabilityChangedCallback Entered");
+            Console.WriteLine($"{sender} availibility: {e.IsAvailable}");
+
             //Refresh apapters and find the one that matches _adapter from UpdateAdapterInfo()
             NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+
+            
+            //loop thru adapters and find the one 
             foreach (NetworkInterface n in adapters)
             {
                 if (n.Name == _adapter)
@@ -381,7 +387,7 @@ namespace Modern_UI
                                         //once a valid adapter is found, places the name in the adapterName box and sets the adapter variable used in the processes to the name
                                         _nic = nic;
                                         _adapter = nic.Name;
-                                        _mac = nic.GetPhysicalAddress().ToString();
+                                        
 
                                         speed = SpeedCalc(nic);
                                         SetSpeed();
@@ -430,7 +436,7 @@ namespace Modern_UI
                                         //once a valid adapter is found, places the name in the adapterName box and sets the adapter variable used in the processes to the name
                                         _nic = nic;
                                         _adapter = nic.Name;
-                                        _mac = nic.GetPhysicalAddress().ToString();
+                                        
 
                                         speed = SpeedCalc(nic);
                                         SetSpeed();
@@ -521,7 +527,7 @@ namespace Modern_UI
                                         //once a valid adapter is found, places the name in the adapterName box and sets the adapter variable used in the processes to the name
                                         _nic = nic;
                                         _adapter = nic.Name;
-                                        _mac = nic.GetPhysicalAddress().ToString();
+                                        
 
                                         speed = SpeedCalc(nic);
                                         SetSpeed();
@@ -570,7 +576,7 @@ namespace Modern_UI
                                         //once a valid adapter is found, places the name in the adapterName box and sets the adapter variable used in the processes to the name
                                         _nic = nic;
                                         _adapter = nic.Name;
-                                        _mac = nic.GetPhysicalAddress().ToString();
+                                        
 
                                         speed = SpeedCalc(nic);
                                         SetSpeed();
@@ -668,11 +674,17 @@ namespace Modern_UI
             try
             {
                 var p = new Process();
-                p.StartInfo.FileName = "netsh.exe";
-                p.StartInfo.Arguments = $"interface ipv4 set address name=\"{adapter}\" {ipMaskString}\"";
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.RedirectStandardOutput = true;
+                ProcessStartInfo info = new ProcessStartInfo
+                {
+                    FileName = "netsh.exe",
+                    Arguments = $"interface ipv4 set address name=\"{adapter}\" {ipMaskString}\"",
+                    CreateNoWindow = true,
+                    UseShellExecute = true,
+                    Verb = "runas",
+                    RedirectStandardOutput = false,
+                };
+
+                p.StartInfo = info;
 
                 return p;
             }
@@ -721,118 +733,6 @@ namespace Modern_UI
             });
         }
 
-        private void ApplyUserEntryBtn_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine($"ApplyUserEntryBtn Entered. Arg: {e}");
-
-            if (choiceSelect == 5)
-            {
-
-                //split character
-                string sep = @" ";
-                bool validIP;
-                bool validMask;
-
-
-                try
-                {
-                    if (userEntryTxt.Text.Contains(" "))
-                    {
-                        //split user input string into ipa and ipm
-                        string[] customIP = userEntryTxt.Text.Split(sep.ToCharArray());
-
-
-                        validIP = IPAddress.TryParse(customIP[0], out IPAddress ip);
-                        validMask = IPAddress.TryParse(customIP[1], out IPAddress mask);
-
-
-                        if (!validIP || !validMask)
-                        {
-                            statusTxt.Content = "Not a Valid IP Address! Try Again";
-                        }
-                        else
-                        {
-                            Process p = new Process();
-                            p.StartInfo.FileName = "netsh.exe";
-                            p.StartInfo.Arguments = String.Format("interface ipv4 set address name=\"{0}\" static {1} {2}", _adapter, ip, mask);
-                            p.StartInfo.UseShellExecute = false;
-                            p.StartInfo.CreateNoWindow = true;
-                            p.StartInfo.RedirectStandardOutput = true;
-                            ProcessRequest(p);
-                            UpdateAdapterInfo();
-                        }
-                    }
-                    else if (userEntryTxt.Text.Contains("/"))
-                    {
-                        sep = @"/";
-                        string[] customIP = userEntryTxt.Text.Split(sep.ToCharArray());
-
-                        validIP = IPAddress.TryParse(customIP[0], out IPAddress ip);
-                        bool validMaskBits = int.TryParse(customIP[1], out int maskBits);
-
-                        if (validMaskBits)
-                        {
-                            string mask = null;
-
-                            switch (maskBits)
-                            {
-                                case 8:
-                                    mask = "255.0.0.0";
-                                    break;
-                                case 16:
-                                    mask = "255.255.0.0";
-                                    break;
-                                case 22:
-                                    mask = "255.255.252.0";
-                                    break;
-                                case 23:
-                                    mask = "255.255.254.0";
-                                    break;
-                                case 24:
-                                    mask = "255.255.255.0";
-                                    break;
-                                
-                                default:
-                                    mask = null;
-                                    UpdateStatusLbl("Invalid Maskbits! This app only supports '/8', '/16', '/22', '/23', or '/24'");
-                                    break;
-                            }
-
-                            if (!string.IsNullOrEmpty(mask))
-                            {
-                                Process p = new Process();
-                                p.StartInfo.FileName = "netsh.exe";
-                                p.StartInfo.Arguments = String.Format("interface ipv4 set address name=\"{0}\" static {1} {2}", _adapter, ip, mask);
-                                p.StartInfo.UseShellExecute = false;
-                                p.StartInfo.CreateNoWindow = true;
-                                p.StartInfo.RedirectStandardOutput = true;
-                                ProcessRequest(p);
-                                UpdateAdapterInfo();
-                            }
-                        }
-                        else
-                        {
-                            UpdateStatusLbl("Invalid Maskbits! This app only supports '/8', '/16', '/22', '/23', or '/24')");
-                        }
-                    }
-                    else
-                    {
-                        UpdateStatusLbl("Invalid IP Entry! Try Again. (ApplyUserEntry)");
-                    }
-                }
-
-                catch (IndexOutOfRangeException)
-                {
-                    UpdateStatusLbl("You must enter an IPAddress followed by a single space, then a Subnet Mask");
-                    //userEntryTxt.Text = _defaultChoice5Content;
-                }
-                catch (Exception)
-                {
-                    UpdateStatusLbl("Invalid! Try Again");
-                }
-            }
-        }
-
         private void ResetUserEntryText()
         {
             this.Dispatcher.Invoke(() => 
@@ -852,7 +752,7 @@ namespace Modern_UI
                     System.Windows.Forms.Application.Exit();
                 }
 
-                if (e.Key == Key.Enter || e.Key == Key.Return)
+                if (e.Key == Key.Enter || e.Key == Key.Return )
                 {
                     Console.WriteLine($"UserEntrTxt: {userEntryTxt.Text}");
 
@@ -884,11 +784,16 @@ namespace Modern_UI
                                 else
                                 {
                                     Process p = new Process();
-                                    p.StartInfo.FileName = "netsh.exe";
-                                    p.StartInfo.Arguments = String.Format("interface ipv4 set address name=\"{0}\" static {1} {2}", _adapter, ip, mask);
-                                    p.StartInfo.UseShellExecute = false;
-                                    p.StartInfo.CreateNoWindow = true;
-                                    p.StartInfo.RedirectStandardOutput = true;
+                                    ProcessStartInfo info = new ProcessStartInfo
+                                    {
+                                        FileName = "netsh.exe",
+                                        Arguments = String.Format("interface ipv4 set address name=\"{0}\" static {1} {2}", _adapter, ip, mask),
+                                        CreateNoWindow = true,
+                                        UseShellExecute = true,
+                                        Verb = "runas",
+                                        RedirectStandardOutput = false,
+                                    };
+                                    
                                     ProcessRequest(p);
                                     UpdateAdapterInfo();
                                 }
@@ -932,11 +837,16 @@ namespace Modern_UI
                                     if (!string.IsNullOrEmpty(mask))
                                     {
                                         Process p = new Process();
-                                        p.StartInfo.FileName = "netsh.exe";
-                                        p.StartInfo.Arguments = String.Format("interface ipv4 set address name=\"{0}\" static {1} {2}", _adapter, ip, mask);
-                                        p.StartInfo.UseShellExecute = false;
-                                        p.StartInfo.CreateNoWindow = true;
-                                        p.StartInfo.RedirectStandardOutput = true;
+                                        ProcessStartInfo info = new ProcessStartInfo
+                                        {
+                                            FileName = "netsh.exe",
+                                            Arguments = String.Format("interface ipv4 set address name=\"{0}\" static {1} {2}", _adapter, ip, mask),
+                                            CreateNoWindow = true,
+                                            UseShellExecute = true,
+                                            Verb = "runas",
+                                            RedirectStandardOutput = false,
+                                        };
+
                                         ProcessRequest(p);
                                         UpdateAdapterInfo();
                                     }
@@ -1003,16 +913,6 @@ namespace Modern_UI
 
         private long SpeedCalc(NetworkInterface nic)
         {
-            /*
-            long avgSpeed = 0;
-            for (int i = 1; i < 10; i++)
-            {
-                avgSpeed = (nic.Speed + avgSpeed) / i;
-                Console.WriteLine($"avgSpeed: {avgSpeed}");
-                Thread.Sleep(200);
-            }
-            */
-
             return nic.Speed;
         }
 
@@ -1021,7 +921,7 @@ namespace Modern_UI
             string speedSuffix = string.Empty;
             decimal div = 0;
 
-            if (Math.Round(speed  / 1000000d, 0) >= 999)  //10485576d
+            if (Math.Round(speed  / 1000000d, 0) >= 999) 
             {
                 speedSuffix = "Gbps";
                 div = 1000;

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modern UI", "Modern UI\Modern UI.csproj", "{114DD26D-69BC-4DFC-9A44-35A22D7DF266}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WetWorks_Networks", "Modern UI\WetWorks_Networks.csproj", "{114DD26D-69BC-4DFC-9A44-35A22D7DF266}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
