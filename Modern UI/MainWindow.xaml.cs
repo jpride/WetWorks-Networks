@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Threading;
 using System.Windows.Input;
 using System.Reflection;
+using System.Threading.Tasks;
 
 
 namespace WetWorks_NetWorks
@@ -55,7 +56,6 @@ namespace WetWorks_NetWorks
             //Event handler watching for Network Address Change, triggers the UpdateAdapterInfo() method
             NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
             NetworkChange.NetworkAvailabilityChanged += new NetworkAvailabilityChangedEventHandler(NetworkAvailabilityChangedCallback);
-            
 
             //Initialize button content
             choice1Btn.Content = _dhcpChoiceContent;
@@ -673,6 +673,7 @@ namespace WetWorks_NetWorks
             try
             {
                 var p = new Process();
+               
                 ProcessStartInfo info = new ProcessStartInfo
                 {
                     FileName = "netsh.exe",
@@ -682,7 +683,7 @@ namespace WetWorks_NetWorks
                     Verb = "runas",
                     RedirectStandardOutput = false,
                 };
-
+                
                 p.StartInfo = info;
 
                 return p;
@@ -781,6 +782,7 @@ namespace WetWorks_NetWorks
                                 else
                                 {
                                     Process p = new Process();
+                                    
                                     ProcessStartInfo info = new ProcessStartInfo
                                     {
                                         FileName = "netsh.exe",
@@ -834,6 +836,7 @@ namespace WetWorks_NetWorks
                                     if (!string.IsNullOrEmpty(mask))
                                     {
                                         Process p = new Process();
+                                        
                                         ProcessStartInfo info = new ProcessStartInfo
                                         {
                                             FileName = "netsh.exe",
@@ -843,6 +846,7 @@ namespace WetWorks_NetWorks
                                             Verb = "runas",
                                             RedirectStandardOutput = false,
                                         };
+
                                         p.StartInfo = info;
                                         ProcessRequest(p);
                                         UpdateAdapterInfo();
